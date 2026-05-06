@@ -9,11 +9,13 @@ int main() {
     monitor.addDevice(2, "Light", 20, "Room2");
     
     int choice;
-
+while (true) {
     cout << "=== Energy Monitor ===" << endl;
     cout << "1. Add Device" << endl;
     cout << "2. Toggle Device" << endl;
     cout << "3. List Devices" << endl;
+    cout << "0. Exit" << endl;
+
     cout << "Enter your choice: ";
     cin >> choice;
 
@@ -53,12 +55,13 @@ int main() {
 
         else if (choice == 0) {
             cout << "Exiting...\n";
+            break;
         }
 
         else {
             cout << "Invalid choice!\n";
         }
-
-    
+    }
     return 0;
 }
+   
