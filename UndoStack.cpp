@@ -1,16 +1,17 @@
 #include "UndoStack.h"
 
-void UndoStack::pushAction(const std::string& deviceId) {
-    history.push(deviceId);
+void UndoStack::push(string action) {
+    history.push(action);
 }
 
-std::string UndoStack::popAction() {
+string UndoStack::pop() {
     if (history.empty()) return "";
-    std::string lastId = history.top();
+
+    string last = history.top();
     history.pop();
-    return lastId;
+    return last;
 }
 
-bool UndoStack::isEmpty() const {
+bool UndoStack::isEmpty()  {
     return history.empty();
 }

@@ -6,12 +6,15 @@
 #include <vector>
 #include <string>
 #include "Device.h"
+#include "UndoStack.h"
 
 class EnergyMonitor {
 private:
     std::map<int, Device> devices;   // device storage
     std::queue<int> dataQueue;       // simple queue for now
     std::vector<std::string> alerts;
+    UndoStack undoStack;
+
     
 public:
     EnergyMonitor();
@@ -21,6 +24,7 @@ public:
     void toggleDevice(int id);    
     void listDevices();
     void showStatus();
+    void undo();
 
     void pushReading(int time);
     void processStream();

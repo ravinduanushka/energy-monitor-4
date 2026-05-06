@@ -1,4 +1,5 @@
 #include "EnergyQueue.h"
+#include "UndoStack.h"
 
 EnergyQueue::EnergyQueue(size_t wSize) : windowSize(wSize) {}
 

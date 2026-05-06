@@ -1,14 +1,14 @@
 #pragma once
 #include <stack>
-#include <string>
 #include <iostream>
+using namespace std;
 
 class UndoStack {
 private:
-    std::stack<std::string> history;
+    stack<string> history;
 
 public:
-    void pushAction(const std::string& deviceId);
-    std::string popAction();
-    bool isEmpty() const;
+    void push( string action);
+    string pop();
+    bool isEmpty() ;
 };

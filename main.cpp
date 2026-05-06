@@ -14,6 +14,7 @@ while (true) {
     cout << "1. Add Device" << endl;
     cout << "2. Toggle Device" << endl;
     cout << "3. List Devices" << endl;
+    cout << "4. Undo" << endl;
     cout << "0. Exit" << endl;
 
     cout << "Enter your choice: ";
@@ -51,6 +52,9 @@ while (true) {
 
         else if (choice == 3) {
             monitor.showStatus();  
+        }
+        else if (choice == 4) {
+            monitor.undo();   
         }
 
         else if (choice == 0) {
