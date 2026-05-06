@@ -1,9 +1,35 @@
 #include "Device.h"
 
-Device::Device() : id(""), name(""), powerRating(0.0), status(false) {}
+Device::Device() {
+    id = 0;
+    power = 0;
+    status = false;
+    room = "";
+}
 
-Device::Device(std::string id, std::string name, double powerRating)
-    : id(id), name(name), powerRating(powerRating), status(false) {}
+Device::Device(int id, std::string name, double power, std::string room) {
+    this->id = id;
+    this->name = name;
+    this->powerRating = powerRating;
+    this->room = room;
+    status = false;
+}
+
+std::string Device::getRoom() const {
+    return room;
+}
+
+std::string Device::getName() const {
+    return name;
+}
+
+double Device::getPower() const {
+    return power;
+}
+
+bool Device::isOn() const {
+    return status;
+}
 
 void Device::turnOn() {
     status = true;
@@ -11,11 +37,4 @@ void Device::turnOn() {
 
 void Device::turnOff() {
     status = false;
-}
-
-double Device::getCurrentUsage() const {
-    if (status) {
-        return powerRating;
-    }
-    return 0.0;
 }

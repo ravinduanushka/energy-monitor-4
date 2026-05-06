@@ -1,17 +1,29 @@
-#pragma once
+#ifndef DEVICE_H
+#define DEVICE_H
+
 #include <string>
 
 class Device {
-public:
-    std::string id;
+private:
+    int id;
     std::string name;
-    double powerRating; // In watts
-    bool status; // true = ON, false = OFF
+    double powerRating;
+    double power;
+    std::string room;   // ⭐ NEW
+    bool status;
 
+public:
     Device();
-    Device(std::string id, std::string name, double powerRating);
+    Device(int id, std::string name, double power, std::string room);
 
     void turnOn();
     void turnOff();
-    double getCurrentUsage() const;
+
+    bool isOn() const;
+    double getPower() const;
+
+    std::string getName()const;
+    std::string getRoom() const;  
 };
+
+#endif
