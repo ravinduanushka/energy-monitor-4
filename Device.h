@@ -2,14 +2,15 @@
 #define DEVICE_H
 
 #include <string>
+using namespace std;
 
 class Device {
 private:
     int id;
-    std::string name;
+    string name;
     double powerRating;
     double power;
-    std::string room;   // ⭐ NEW
+    string room;  
     bool status;
 
 public:
@@ -18,12 +19,14 @@ public:
 
     void turnOn();
     void turnOff();
-
+    void toggle();
+    
+    string getId() const;
     bool isOn() const;
     double getPower() const;
 
-    std::string getName()const;
-    std::string getRoom() const;  
+    string getName()const;
+    string getRoom() const;  
 };
 
 #endif

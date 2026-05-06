@@ -1,4 +1,5 @@
 #include "Device.h"
+using namespace std;
 
 Device::Device() {
     id = 0;
@@ -10,7 +11,7 @@ Device::Device() {
 Device::Device(int id, std::string name, double power, std::string room) {
     this->id = id;
     this->name = name;
-    this->powerRating = powerRating;
+    this->powerRating = power;
     this->room = room;
     status = false;
 }
@@ -24,7 +25,7 @@ std::string Device::getName() const {
 }
 
 double Device::getPower() const {
-    return power;
+    return powerRating;
 }
 
 bool Device::isOn() const {
@@ -37,4 +38,8 @@ void Device::turnOn() {
 
 void Device::turnOff() {
     status = false;
+}
+
+void Device::toggle() {
+    status = !status;
 }

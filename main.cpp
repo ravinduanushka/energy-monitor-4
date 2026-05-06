@@ -1,10 +1,13 @@
 #include <iostream>
+#include <string>
 using namespace std;
 #include "EnergyMonitor.h"
-
-
 int main() {
     EnergyMonitor monitor;
+
+    monitor.addDevice(1, "Fan", 60, "Room1");
+    monitor.addDevice(2, "Light", 20, "Room2");
+    
     int choice;
 
     cout << "=== Energy Monitor ===" << endl;
@@ -34,7 +37,28 @@ int main() {
 
     monitor.addDevice(id, name, power, room);
 
-    cout << "✅ Device Added with Room Successfully!\n";
-}
+    cout << "Device Added with Room Successfully!\n";
+} 
+ else if (choice == 2) {
+            int id;
+            cout << "Enter Device ID: ";
+            cin >> id;
+
+            monitor.toggleDevice(id);
+        }
+
+        else if (choice == 3) {
+            monitor.showStatus();  
+        }
+
+        else if (choice == 0) {
+            cout << "Exiting...\n";
+        }
+
+        else {
+            cout << "Invalid choice!\n";
+        }
+
+    
     return 0;
 }

@@ -12,14 +12,15 @@ private:
     std::map<int, Device> devices;   // device storage
     std::queue<int> dataQueue;       // simple queue for now
     std::vector<std::string> alerts;
-
+    
 public:
     EnergyMonitor();
 
     // Core features (your menu functions)
     void addDevice(int id, std::string name, double power, std::string room);
-    void toggleDevice(int id);
+    void toggleDevice(int id);    
     void listDevices();
+    void showStatus();
 
     void pushReading(int time);
     void processStream();
