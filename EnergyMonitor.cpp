@@ -4,6 +4,8 @@
 #include "EnergyMonitor.h"
 #include "Device.h"
 UndoStack undoStack;
+#include <fstream>
+#include <sstream>
 using namespace std;
 
 EnergyMonitor::EnergyMonitor() {
@@ -65,4 +67,55 @@ void EnergyMonitor::undo() {
         devices.erase(id); 
         cout << "Undo add (removed device " << id << ")" << endl;
     }
+}
+
+void EnergyMonitor::loadFromFile() {
+    ifstream file("devices.txt");
+
+    if (!file.is_open()) return;
+
+    string line;
+
+    while (getline(file, line)) {
+        stringstream ss(line);
+
+        int id;
+        string name;
+        double power;
+        string room;
+        int status;
+
+        char comma;
+
+        ss >> id >> comma;
+        getline(ss, name, ',');
+        ss >> power >> comma;
+        getline(ss, room, ',');
+        ss >> status;
+
+        devices[id] = Device(id, name, power, room);
+
+        if (status == 1) {
+            devices[id].toggle(); // restore ON state
+        }
+    }
+
+    file.close();
+}
+
+void EnergyMonitor::saveToFile() {
+    ofstream file("devices.txt");
+
+    for (auto &pair : devices) {
+        Device &d = pair.second;
+
+        file << pair.first << ","
+             << d.getName() << ","
+             << d.getPower() << ","
+             << d.getRoom() << ","
+             << d.isOn()
+             << endl;
+    }
+
+    file.close();
 }

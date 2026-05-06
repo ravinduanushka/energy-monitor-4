@@ -25,6 +25,9 @@ public:
     void listDevices();
     void showStatus();
     void undo();
+   
+    void loadFromFile();
+    void saveToFile();
 
     void pushReading(int time);
     void processStream();

@@ -4,6 +4,7 @@ using namespace std;
 #include "EnergyMonitor.h"
 int main() {
     EnergyMonitor monitor;
+    monitor.loadFromFile();  
 
     monitor.addDevice(1, "Fan", 60, "Room1");
     monitor.addDevice(2, "Light", 20, "Room2");
@@ -15,7 +16,8 @@ while (true) {
     cout << "2. Toggle Device" << endl;
     cout << "3. List Devices" << endl;
     cout << "4. Undo" << endl;
-    cout << "0. Exit" << endl;
+    cout << "5. Save And Exit" << endl;
+    // cout << "0. Exit" << endl;
 
     cout << "Enter your choice: ";
     cin >> choice;
@@ -61,6 +63,11 @@ while (true) {
             cout << "Exiting...\n";
             break;
         }
+        else if (choice == 5) {
+         monitor.saveToFile();  // 💾 save everything
+        cout << "Data saved. Exiting..." << endl;
+        break;
+}
 
         else {
             cout << "Invalid choice!\n";

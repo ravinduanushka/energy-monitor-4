@@ -1,6 +1,7 @@
 #include "EnergyQueue.h"
 #include "UndoStack.h"
 
+
 EnergyQueue::EnergyQueue(size_t wSize) : windowSize(wSize) {}
 
 void EnergyQueue::pushReading(const std::string& id, double time, double usage) {
@@ -45,3 +46,4 @@ void EnergyQueue::predictTrend() const {
 bool EnergyQueue::isEmpty() const {
     return dataStream.empty();
 }
+
