@@ -3,19 +3,27 @@
 #include <string>     
 #include "EnergyMonitor.h"
 #include "Device.h"
-UndoStack undoStack;
 #include <fstream>
 #include <sstream>
 using namespace std;
 
-EnergyMonitor::EnergyMonitor() {
+EnergyMonitor::EnergyMonitor() 
+    : alertHistory(5)  // keep last 5 alerts
+    {
 
 }
 
 void EnergyMonitor::addDevice(int id, std::string name, double power, std::string room) {
     devices[id] = Device(id, name, power, room);
 undoStack.push("ADD " + to_string(id));
+    alertHistory.addAlert("Device added: " + to_string(id));
+    if (power > powerThreshold) {
+        alertHistory.addAlert(" HIGH POWER ALERT: Device " + to_string(id) +
+                              " exceeds limit (" + to_string(power) + "W)");
+        cout << "ALERT: Power limit exceeded!\n";
 }
+}
+
 void EnergyMonitor::toggleDevice(int id) {
     if (devices.find(id) == devices.end()) {
         cout << "Not found" << endl;
@@ -24,6 +32,17 @@ void EnergyMonitor::toggleDevice(int id) {
     devices[id].toggle();
 
     undoStack.push("TOGGLE " + to_string(id));    cout << "Toggled device " << id << endl;
+        alertHistory.addAlert("Toggled device: " + to_string(id));
+          cout << "Toggled device " << id << endl;
+
+   double p = devices[id].getPower();
+
+    if (p > powerThreshold && devices[id].isOn()) {
+        alertHistory.addAlert("HIGH POWER ALERT: Device " + to_string(id));
+        cout << "WARNING: High power device ON!\n";
+    }
+
+
 }
 void EnergyMonitor::showStatus() {
 
@@ -118,4 +137,10 @@ void EnergyMonitor::saveToFile() {
     }
 
     file.close();
+}
+void EnergyMonitor::printAlerts() {
+    alertHistory.displayAlerts();
+}
+void EnergyMonitor::setThreshold(double t) {
+    powerThreshold = t;
 }

@@ -47,3 +47,4 @@ bool EnergyQueue::isEmpty() const {
     return dataStream.empty();
 }
 
+

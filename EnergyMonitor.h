@@ -7,13 +7,15 @@
 #include <string>
 #include "Device.h"
 #include "UndoStack.h"
+#include "AlertHistory.h"
 
 class EnergyMonitor {
 private:
     std::map<int, Device> devices;   // device storage
     std::queue<int> dataQueue;       // simple queue for now
-    std::vector<std::string> alerts;
+    AlertHistory alertHistory;
     UndoStack undoStack;
+    double powerThreshold = 50;
 
     
 public:
@@ -28,11 +30,14 @@ public:
    
     void loadFromFile();
     void saveToFile();
+    void alertHis();
+    void printAlerts();
 
     void pushReading(int time);
     void processStream();
+    void setThreshold(double t);
 
-    void printAlerts();
+    
 
     // future features
     std::map<int, Device>& getDevices();

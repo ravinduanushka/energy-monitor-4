@@ -16,7 +16,8 @@ while (true) {
     cout << "2. Toggle Device" << endl;
     cout << "3. List Devices" << endl;
     cout << "4. Undo" << endl;
-    cout << "5. Save And Exit" << endl;
+    cout << "5. Show Alerts" << endl;
+    cout << "6. Save And Exit" << endl;
     // cout << "0. Exit" << endl;
 
     cout << "Enter your choice: ";
@@ -64,11 +65,14 @@ while (true) {
             break;
         }
         else if (choice == 5) {
-         monitor.saveToFile();  // 💾 save everything
-        cout << "Data saved. Exiting..." << endl;
-        break;
-}
-
+            monitor.printAlerts();
+        }
+        else if (choice == 6) {
+            monitor.saveToFile();
+            cout << "Data saved. Exiting...\n";
+            break;
+        }
+        
         else {
             cout << "Invalid choice!\n";
         }
