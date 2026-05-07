@@ -24,6 +24,7 @@ void EnergyMonitor::addDevice(int id, std::string name, double power, std::strin
 
         return;
     }
+     devices[id] = Device(id, name, power, room);
 undoStack.push("ADD " + to_string(id));
     alertHistory.addAlert("Device added: " + to_string(id));
     if (power > powerThreshold) {
@@ -257,5 +258,183 @@ void EnergyMonitor::live7SecondDashboard() {
         }
 
         Sleep(1000);
+    }
+}
+void EnergyMonitor::connectRooms(std::string r1, std::string r2) {
+
+    roomGraph[r1].push_back(r2);
+    roomGraph[r2].push_back(r1);
+
+    cout << "Connected " << r1 << " <-> " << r2 << endl;
+}
+void EnergyMonitor::updateRoomEnergy() {
+
+    roomEnergy.clear();
+
+    for (auto &pair : devices) {
+
+        Device &d = pair.second;
+
+        if (d.isOn()) {
+            roomEnergy[d.getRoom()] += d.getPower();
+        }
+    }
+}
+void EnergyMonitor::showRoomGraph() {
+
+    cout << "\n=== ROOM CONNECTIVITY ===\n";
+
+    for (auto &pair : roomGraph) {
+
+        cout << pair.first << " → ";
+
+        for (auto &connected : pair.second) {
+            cout << connected << " ";
+        }
+
+        cout << endl;
+    }
+}
+void EnergyMonitor::dfsPath(std::string room,
+                            double currentSum,
+                            std::map<std::string, bool>& visited,
+                            std::string path,
+                            std::string& bestPath,
+                            double& maxSum) {
+
+    visited[room] = true;
+
+    currentSum += roomEnergy[room];
+    path += room + " ";
+
+    // update best result
+    if (currentSum > maxSum) {
+        maxSum = currentSum;
+        bestPath = path;
+    }
+
+    for (std::string neighbor : roomGraph[room]) {
+
+        if (!visited[neighbor]) {
+            dfsPath(neighbor, currentSum, visited, path, bestPath, maxSum);
+        }
+    }
+
+    visited[room] = false; // backtrack
+}
+void EnergyMonitor::findHighUsagePath() {
+
+    std::string bestPath = "";
+    double maxSum = 0;
+
+    std::map<std::string, bool> visited;
+
+    for (auto &pair : roomGraph) {
+
+        std::string startRoom = pair.first;
+
+        dfsPath(startRoom, 0, visited, "", bestPath, maxSum);
+    }
+
+    cout << "\n=== HIGH USAGE PATH ===\n";
+    cout << "Path: " << bestPath << endl;
+    cout << "Total Usage: " << maxSum << " W\n";
+}
+void EnergyMonitor::controlRoom(std::string room, bool state) {
+
+    for (auto &pair : devices) {
+
+        Device &d = pair.second;
+
+        if (d.getRoom() == room) {
+
+            if (!state && d.isOn()) {
+                d.toggle();   // turn OFF
+            }
+
+            if (state && !d.isOn()) {
+                d.toggle();   // turn ON
+            }
+        }
+    }
+
+    cout << "Room " << room
+         << (state ? " turned ON" : " turned OFF")
+         << endl;
+}
+void EnergyMonitor::showRoomControl() {
+
+    std::map<std::string, double> roomUsage;
+
+    for (auto &pair : devices) {
+
+        Device &d = pair.second;
+
+        if (d.isOn()) {
+            roomUsage[d.getRoom()] += d.getPower();
+        }
+    }
+
+    cout << "\n=== ROOM ENERGY USAGE ===\n";
+
+    for (auto &r : roomUsage) {
+
+        cout << r.first << " = " << r.second << " W\n";
+    }
+}
+void EnergyMonitor::checkRoomLimit() {
+
+    map<string, double> roomUsage;
+
+    // Calculate room totals
+    for (auto &pair : devices) {
+
+        Device &d = pair.second;
+
+        if (d.isOn()) {
+            roomUsage[d.getRoom()] += d.getPower();
+        }
+    }
+
+    cout << "\n=== ROOM LIMIT CHECK ===\n";
+
+    bool alertFound = false;
+
+    for (auto &room : roomUsage) {
+
+        cout << room.first
+             << " : "
+             << room.second
+             << " W";
+
+        if (room.second > roomLimit) {
+
+            cout << " LIMIT EXCEEDED";
+
+            alertHistory.addAlert(
+                "Room limit exceeded: " + room.first
+            );
+
+            alertFound = true;
+        }
+
+        cout << endl;
+    }
+
+    if (!alertFound) {
+        cout << "No rooms exceeded limit.\n";
+    }
+
+    for (auto &r : roomUsage) {
+
+        if (r.second > roomLimit) {
+
+            cout << " ALERT: " << r.first
+                 << " exceeded limit (" << r.second << " W)\n";
+
+            alertHistory.addAlert(
+                "Room overload: " + r.first
+            );
+        }
     }
 }

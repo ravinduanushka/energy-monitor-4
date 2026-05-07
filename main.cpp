@@ -21,7 +21,10 @@ while (true) {
     cout << "7. Calculate Consumption" << endl;
     cout << "8. Set Consumption Threshold" << endl;
     cout << "9. Analyze Room Usage" << endl;
-    cout << "10. Live 7-Second Dashboard" << endl;    
+    cout << "10. Live 7-Second Dashboard" << endl;
+    cout << "11. Control Room (ON/OFF)" << endl;
+    cout << "12. Show Room Usage" << endl;
+    cout << "13. Check Room Limit" << endl;
 
 
 
@@ -93,6 +96,25 @@ while (true) {
        }
         else if (choice == 10) {
             monitor.live7SecondDashboard();
+        }   
+    
+        else if (choice == 11) {
+        string room;
+        int state;
+
+        cout << "Enter Room Name: ";
+        cin >> room;
+
+        cout << "1 = ON, 0 = OFF: ";
+        cin >> state;
+
+        monitor.controlRoom(room, state);
+    }
+        else if (choice == 12) {
+            monitor.showRoomControl();
+        }
+        else if (choice == 13) {
+            monitor.checkRoomLimit();
         }
 
         else {

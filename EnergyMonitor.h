@@ -2,7 +2,7 @@
 #define ENERGY_MONITOR_H
 
 #include <map>
-#include <queue>
+
 #include <vector>
 #include <string>
 #include "Device.h"
@@ -13,14 +13,17 @@
 class EnergyMonitor {
 private:
     std::map<int, Device> devices;   // device storage
-    std::queue<int> dataQueue;       // simple queue for now
+
     AlertHistory alertHistory;
     UndoStack undoStack;
     double powerThreshold = 50;
     double totalConsumption = 0;
-    double consumptionThreshold = 100;
+    double consumptionThreshold = 500;
+    double roomLimit = 100;
     std::vector<double> last7Seconds;
-
+    std::map<std::string, std::vector<std::string>> roomGraph;
+     std::map<std::string, double> roomEnergy;
+     
     
 public:
     EnergyMonitor();
@@ -34,11 +37,10 @@ public:
    
     void loadFromFile();
     void saveToFile();
-    void alertHis();
+    
     void printAlerts();
 
-    void pushReading(int time);
-    void processStream();
+    
     void setThreshold(double t);
 
     void calculateConsumption();
@@ -50,11 +52,22 @@ public:
     void updateConsumptionHistory();
     void show7SecondGraph();
     void live7SecondDashboard();
-
+    void connectRooms(std::string r1, std::string r2);
+    void updateRoomEnergy();
+    void showRoomGraph();
+    void findHighUsagePath();
+    void dfsPath(std::string room, double currentSum,
+             std::map<std::string, bool>& visited,
+             std::string path,
+             std::string& bestPath,
+             double& maxSum);
     
 
-    // future features
+
     std::map<int, Device>& getDevices();
+    void controlRoom(std::string room, bool state);
+    void showRoomControl();
+    void checkRoomLimit();
 };
 
 #endif

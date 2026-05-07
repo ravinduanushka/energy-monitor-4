@@ -3,7 +3,7 @@ using namespace std;
 
 Device::Device() {
     id = 0;
-    power = 0;
+    powerRating = 0;
     status = false;
     room = "";
 }
@@ -14,6 +14,9 @@ Device::Device(int id, std::string name, double power, std::string room) {
     this->powerRating = power;
     this->room = room;
     status = false;
+}
+int Device::getId() const {
+    return id;
 }
 
 std::string Device::getRoom() const {
