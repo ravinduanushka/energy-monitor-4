@@ -18,6 +18,11 @@ while (true) {
     cout << "4. Undo" << endl;
     cout << "5. Show Alerts" << endl;
     cout << "6. Save And Exit" << endl;
+    cout << "7. Calculate Consumption" << endl;
+    cout << "8. Set Consumption Threshold" << endl;
+
+
+
     // cout << "0. Exit" << endl;
 
     cout << "Enter your choice: ";
@@ -72,7 +77,16 @@ while (true) {
             cout << "Data saved. Exiting...\n";
             break;
         }
-        
+        else if (choice == 7) {
+            monitor.calculateConsumption();
+        }
+        else if (choice == 8) {
+            double threshold;
+            cout << "Enter new consumption threshold: ";
+            cin >> threshold;
+            monitor.setConsumptionThreshold(threshold);
+        }
+
         else {
             cout << "Invalid choice!\n";
         }

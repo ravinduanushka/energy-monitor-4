@@ -33,7 +33,7 @@ void EnergyMonitor::toggleDevice(int id) {
 
     undoStack.push("TOGGLE " + to_string(id));    cout << "Toggled device " << id << endl;
         alertHistory.addAlert("Toggled device: " + to_string(id));
-          cout << "Toggled device " << id << endl;
+        //   cout << "Toggled device " << id << endl;
 
    double p = devices[id].getPower();
 
@@ -42,7 +42,7 @@ void EnergyMonitor::toggleDevice(int id) {
         cout << "WARNING: High power device ON!\n";
     }
 
-
+    calculateConsumption();6
 }
 void EnergyMonitor::showStatus() {
 
@@ -143,4 +143,33 @@ void EnergyMonitor::printAlerts() {
 }
 void EnergyMonitor::setThreshold(double t) {
     powerThreshold = t;
+}
+void EnergyMonitor::calculateConsumption() {
+
+    totalConsumption = 0;
+
+    for (auto &pair : devices) {
+
+        Device &d = pair.second;
+
+        if (d.isOn()) {
+            totalConsumption += d.getPower();
+        }
+    }
+
+    cout << "Total Consumption: "
+         << totalConsumption
+         << " W" << endl;
+
+    if (totalConsumption > consumptionThreshold) {
+
+        cout << " TOTAL ENERGY LIMIT EXCEEDED!\n";
+
+        alertHistory.addAlert(
+            "Total consumption exceeded limit!"
+        );
+    }
+}
+void EnergyMonitor::setConsumptionThreshold(double t) {
+    consumptionThreshold = t;
 }

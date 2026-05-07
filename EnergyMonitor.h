@@ -16,6 +16,8 @@ private:
     AlertHistory alertHistory;
     UndoStack undoStack;
     double powerThreshold = 50;
+    double totalConsumption = 0;
+    double consumptionThreshold = 100;
 
     
 public:
@@ -36,6 +38,9 @@ public:
     void pushReading(int time);
     void processStream();
     void setThreshold(double t);
+
+    void calculateConsumption();
+    void setConsumptionThreshold(double t);
 
     
 
