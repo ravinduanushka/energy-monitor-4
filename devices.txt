@@ -1,5 +1,5 @@
 1,Fan,60,Room1,0
-2,Light,20,Room2,1
+2,Light,20,Room2,0
 3,fan,12,bdroom,0
 5,ac,98,room3,1
 6,ac,101,kitchen,1

@@ -17,14 +17,14 @@ while (true) {
     cout << "3. List Devices" << endl;
     cout << "4. Undo" << endl;
     cout << "5. Show Alerts" << endl;
-    cout << "6. Save And Exit" << endl;
-    cout << "7. Calculate Consumption" << endl;
-    cout << "8. Set Consumption Threshold" << endl;
-    cout << "9. Analyze Room Usage" << endl;
-    cout << "10. Live 7-Second Dashboard" << endl;
-    cout << "11. Control Room (ON/OFF)" << endl;
-    cout << "12. Show Room Usage" << endl;
-    cout << "13. Check Room Limit" << endl;
+    cout << "6. Calculate Consumption" << endl;
+    cout << "7. Set Consumption Threshold" << endl;
+    cout << "8. Analyze Room Usage" << endl;
+    cout << "9. Live 7-Second Dashboard" << endl;
+    cout << "10. Control Room (ON/OFF)" << endl;
+    cout << "11. Show Room Usage" << endl;
+    cout << "12. Check Room Limit" << endl;
+    cout << "13. Save And Exit" << endl;
 
 
 
@@ -77,28 +77,24 @@ while (true) {
         else if (choice == 5) {
             monitor.printAlerts();
         }
+        
         else if (choice == 6) {
-            monitor.saveToFile();
-            cout << "Data saved. Exiting...\n";
-            break;
-        }
-        else if (choice == 7) {
             monitor.calculateConsumption();
         }
-        else if (choice == 8) {
+        else if (choice == 7) {
             double threshold;
             cout << "Enter new consumption threshold: ";
             cin >> threshold;
             monitor.setConsumptionThreshold(threshold);
         }
-        else if (choice == 9) {
+        else if (choice == 8) {
     monitor.analyzeRoomUsage();
        }
-        else if (choice == 10) {
+        else if (choice == 9) {
             monitor.live7SecondDashboard();
         }   
     
-        else if (choice == 11) {
+        else if (choice == 10) {
         string room;
         int state;
 
@@ -110,11 +106,16 @@ while (true) {
 
         monitor.controlRoom(room, state);
     }
-        else if (choice == 12) {
+        else if (choice == 11) {
             monitor.showRoomControl();
         }
-        else if (choice == 13) {
+        else if (choice == 12) {
             monitor.checkRoomLimit();
+        }
+        else if (choice == 13) {
+            monitor.saveToFile();
+            cout << "Data saved. Exiting...\n";
+            break;
         }
 
         else {
