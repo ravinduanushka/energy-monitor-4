@@ -21,6 +21,7 @@ while (true) {
     cout << "7. Calculate Consumption" << endl;
     cout << "8. Set Consumption Threshold" << endl;
     cout << "9. Analyze Room Usage" << endl;
+    cout << "10. Live 7-Second Dashboard" << endl;    
 
 
 
@@ -90,6 +91,9 @@ while (true) {
         else if (choice == 9) {
     monitor.analyzeRoomUsage();
        }
+        else if (choice == 10) {
+            monitor.live7SecondDashboard();
+        }
 
         else {
             cout << "Invalid choice!\n";

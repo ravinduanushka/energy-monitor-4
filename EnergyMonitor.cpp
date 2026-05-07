@@ -5,6 +5,8 @@
 #include "Device.h"
 #include <fstream>
 #include <sstream>
+#include <windows.h>
+#include <conio.h>
 using namespace std;
 
 EnergyMonitor::EnergyMonitor() 
@@ -14,7 +16,14 @@ EnergyMonitor::EnergyMonitor()
 }
 
 void EnergyMonitor::addDevice(int id, std::string name, double power, std::string room) {
-    devices[id] = Device(id, name, power, room);
+    if (devices.find(id) != devices.end()) {
+
+        cout << "Device ID already exists! Updating instead...\n";
+
+        devices[id] = Device(id, name, power, room);
+
+        return;
+    }
 undoStack.push("ADD " + to_string(id));
     alertHistory.addAlert("Device added: " + to_string(id));
     if (power > powerThreshold) {
@@ -208,4 +217,45 @@ void EnergyMonitor::analyzeRoomUsage() {
          << " ("
          << maxPower
          << " W)" << endl;
+}
+
+
+void EnergyMonitor::live7SecondDashboard() {
+
+    while (true) {
+
+        if (_kbhit()) {
+            char key = _getch();
+
+            if (key == 'q' || key == 'Q') {
+                cout << "\nExiting dashboard...\n";
+                break;
+            }
+        }
+
+        double total = 0;
+
+        for (auto &pair : devices) {
+            Device &d = pair.second;
+            if (d.isOn()) total += d.getPower();
+        }
+
+        if (last7Seconds.size() == 7)
+            last7Seconds.erase(last7Seconds.begin());
+
+        last7Seconds.push_back(total);
+
+        system("cls");
+
+        cout << "=== LIVE DASHBOARD (Press Q to exit) ===\n\n";
+        cout << "Total: " << total << " W\n\n";
+
+        for (double v : last7Seconds) {
+            cout << v << "W | ";
+            for (int i = 0; i < v / 10; i++) cout << "#";
+            cout << endl;
+        }
+
+        Sleep(1000);
+    }
 }

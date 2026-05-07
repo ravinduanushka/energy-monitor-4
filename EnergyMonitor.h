@@ -19,6 +19,7 @@ private:
     double powerThreshold = 50;
     double totalConsumption = 0;
     double consumptionThreshold = 100;
+    std::vector<double> last7Seconds;
 
     
 public:
@@ -44,6 +45,11 @@ public:
     void setConsumptionThreshold(double t);
 
     void analyzeRoomUsage();
+
+    
+    void updateConsumptionHistory();
+    void show7SecondGraph();
+    void live7SecondDashboard();
 
     
 
