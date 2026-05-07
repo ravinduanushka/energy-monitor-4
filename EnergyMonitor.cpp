@@ -42,7 +42,7 @@ void EnergyMonitor::toggleDevice(int id) {
         cout << "WARNING: High power device ON!\n";
     }
 
-    calculateConsumption();6
+    calculateConsumption();
 }
 void EnergyMonitor::showStatus() {
 
@@ -172,4 +172,40 @@ void EnergyMonitor::calculateConsumption() {
 }
 void EnergyMonitor::setConsumptionThreshold(double t) {
     consumptionThreshold = t;
+}
+void EnergyMonitor::analyzeRoomUsage() {
+
+    std::map<std::string, double> roomUsage;
+
+    for (auto &pair : devices) {
+
+        Device &d = pair.second;
+
+        if (d.isOn()) {
+            roomUsage[d.getRoom()] += d.getPower();
+        }
+    }
+
+    std::string highestRoom = "";
+    double maxPower = 0;
+
+    for (auto &room : roomUsage) {
+
+        cout << room.first
+             << " : "
+             << room.second
+             << " W" << endl;
+
+        if (room.second > maxPower) {
+
+            maxPower = room.second;
+            highestRoom = room.first;
+        }
+    }
+
+    cout << "\nHighest Consuming Room: "
+         << highestRoom
+         << " ("
+         << maxPower
+         << " W)" << endl;
 }

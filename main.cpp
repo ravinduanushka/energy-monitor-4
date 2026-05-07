@@ -20,6 +20,7 @@ while (true) {
     cout << "6. Save And Exit" << endl;
     cout << "7. Calculate Consumption" << endl;
     cout << "8. Set Consumption Threshold" << endl;
+    cout << "9. Analyze Room Usage" << endl;
 
 
 
@@ -86,6 +87,9 @@ while (true) {
             cin >> threshold;
             monitor.setConsumptionThreshold(threshold);
         }
+        else if (choice == 9) {
+    monitor.analyzeRoomUsage();
+       }
 
         else {
             cout << "Invalid choice!\n";

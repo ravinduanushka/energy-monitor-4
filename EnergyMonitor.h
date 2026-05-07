@@ -8,6 +8,7 @@
 #include "Device.h"
 #include "UndoStack.h"
 #include "AlertHistory.h"
+#include "TreeNode.h"
 
 class EnergyMonitor {
 private:
@@ -41,6 +42,8 @@ public:
 
     void calculateConsumption();
     void setConsumptionThreshold(double t);
+
+    void analyzeRoomUsage();
 
     
 
