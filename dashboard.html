@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Energy Usage Monitor | Dashboard</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Initialization Overlay -->
+    <div id="init-overlay" class="init-overlay">
+        <div class="init-content">
+            <div class="power-icon-wrapper">
+                <i class="fas fa-bolt power-icon"></i>
+            </div>
+            <h2>EnergyOS v4.0</h2>
+            <p>System is currently in standby mode.</p>
+            <button id="init-btn" class="init-btn">DOUBLE CLICK TO START SYSTEM</button>
+            <p class="hint">Security verification required</p>
+        </div>
+    </div>
+
+    <div class="app-container hidden" id="main-app">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <div class="logo-icon"><i class="fas fa-leaf"></i></div>
+                <span>EnergyOS</span>
+            </div>
+            <nav>
+                <div class="nav-item active" onclick="showView('dashboard-view', this)">
+                    <i class="fas fa-chart-line"></i> Dashboard
+                </div>
+                <div class="nav-item" onclick="showView('room-view', this)">
+                    <i class="fas fa-house-user"></i> Room Analysis
+                </div>
+                <div class="nav-item" onclick="showView('history-view', this)">
+                    <i class="fas fa-history"></i> History
+                </div>
+                <div class="nav-item" onclick="showView('settings-view', this)">
+                    <i class="fas fa-cog"></i> System Settings
+                </div>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <div class="avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-info">
+                        <p class="name">Smart Home Admin</p>
+                        <p class="status"><span class="status-dot"></span> System Active</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-header">
+                <div class="header-title">
+                    <h1>Energy Dashboard</h1>
+                    <p class="subtitle">Live monitoring and resource management</p>
+                </div>
+                <div class="header-actions">
+                    <button class="undo-btn" onclick="monitor.undo()">
+                        <i class="fas fa-undo"></i> Undo
+                    </button>
+                    <div class="alert-badge pulse" id="alert-summary">
+                        <i class="fas fa-bell"></i>
+                        <span class="count">2 Alerts</span>
+                    </div>
+                    <div class="date-time" id="clock">00:00:00</div>
+                </div>
+            </header>
+
+            <div class="view-container">
+                <!-- Dashboard View -->
+                <div id="dashboard-view" class="view-section">
+                    <!-- Stats Grid -->
+                    <section class="stats-grid">
+                        <div class="stat-card glass">
+                            <div class="stat-icon usage"><i class="fas fa-bolt"></i></div>
+                            <div class="stat-data">
+                                <p class="label">Current Usage</p>
+                                <div class="value-container">
+                                    <span class="value">0</span>
+                                    <span class="unit">Watts</span>
+                                </div>
+                            </div>
+                            <div class="trend up">Live</div>
+                        </div>
+                        <div class="stat-card glass">
+                            <div class="stat-icon daily"><i class="fas fa-calendar-day"></i></div>
+                            <div class="stat-data">
+                                <p class="label">Daily Total</p>
+                                <div class="value-container">
+                                    <span class="value">0</span>
+                                    <span class="unit">kWh</span>
+                                </div>
+                            </div>
+                            <div class="trend down">Calculated</div>
+                        </div>
+                        <div class="stat-card alert-card glass">
+                            <div class="stat-icon status"><i class="fas fa-shield-alt"></i></div>
+                            <div class="stat-data">
+                                <p class="label">System Status</p>
+                                <div class="value-container">
+                                    <span class="status-text">OPTIMAL</span>
+                                </div>
+                            </div>
+                            <p class="status-desc">Threshold Monitor</p>
+                        </div>
+                        <div class="stat-card predictive-card glass">
+                            <div class="stat-icon trend-icon"><i class="fas fa-wave-square"></i></div>
+                            <div class="stat-data">
+                                <p class="label">Predictive Trend</p>
+                                <div class="value-container">
+                                    <span class="trend-text">STABLE</span>
+                                </div>
+                            </div>
+                            <p class="trend-desc">Trend Analysis</p>
+                        </div>
+                    </section>
+
+                    <!-- Middle Section -->
+                    <section class="middle-section">
+                        <div class="chart-container glass">
+                            <div class="card-header">
+                                <h2>Consumption Analytics</h2>
+                                <div class="legend">
+                                    <span class="dot live"></span> Real-time
+                                </div>
+                            </div>
+                            <div class="mock-chart">
+                                <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                                <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                            </div>
+                            <div class="chart-labels">
+                                <span>-10s</span>
+                                <span>-5s</span>
+                                <span>Now</span>
+                            </div>
+                        </div>
+
+                        <div class="top-consumers glass">
+                            <div class="card-header">
+                                <h2>Top Consumers</h2>
+                            </div>
+                            <ul class="consumer-list">
+                                <!-- Populated by JS -->
+                            </ul>
+                        </div>
+                    </section>
+
+                    <!-- Device Management -->
+                    <section class="devices-section glass">
+                        <div class="card-header">
+                            <h2>Managed Devices</h2>
+                            <div class="header-tools">
+                                <div class="search-box">
+                                    <i class="fas fa-search"></i>
+                                    <input type="number" id="min-p" placeholder="Min W" oninput="runTreeSearch()">
+                                    <span class="sep">-</span>
+                                    <input type="number" id="max-p" placeholder="Max W" oninput="runTreeSearch()">
+                                </div>
+                                <button class="add-device-btn" onclick="toggleForm()">
+                                    <i class="fas fa-plus"></i> Add Device
+                                </button>
+                            </div>
+                        </div>
+
+                        <div id="tree-search-results" class="tree-results hidden">
+                            <!-- BST search results -->
+                        </div>
+
+                        <div id="add-device-form" class="add-device-card hidden glass">
+                            <h3>Add New Device</h3>
+                            <div class="form-grid">
+                                <div class="input-group">
+                                    <label>Device ID</label>
+                                    <input type="text" id="dev-id" placeholder="e.g. D101">
+                                </div>
+                                <div class="input-group">
+                                    <label>Device Name</label>
+                                    <input type="text" id="dev-name" placeholder="e.g. Smart Fan">
+                                </div>
+                                <div class="input-group">
+                                    <label>Power Rating (W)</label>
+                                    <input type="number" id="dev-power" placeholder="e.g. 150">
+                                </div>
+                                <div class="input-group">
+                                    <label>Room/Node</label>
+                                    <input type="text" id="dev-room" placeholder="e.g. LivingRoom">
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button class="submit-btn" onclick="addNewDevice()">Save Device</button>
+                                <button class="cancel-btn" onclick="toggleForm()">Cancel</button>
+                            </div>
+                        </div>
+
+                        <div class="device-grid">
+                            <!-- Populated by JS -->
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Room Analysis View -->
+                <div id="room-view" class="view-section hidden">
+                    <section class="analysis-section glass">
+                        <div class="card-header">
+                            <h2>Room-wise Analysis</h2>
+                        </div>
+                        <div class="room-selector-wrapper">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <select id="room-select" onchange="runRoomAnalysis()">
+                                <option value="">Select a Room...</option>
+                                <option value="LivingRoom">Living Room</option>
+                                <option value="Kitchen">Kitchen</option>
+                                <option value="Bedroom">Bedroom</option>
+                            </select>
+                        </div>
+                        <div id="graph-results" class="graph-results-card">
+                            <div class="placeholder-content">
+                                <i class="fas fa-project-diagram"></i>
+                                <p>Select a room to trigger DFS Graph traversal analysis.</p>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- History View -->
+                <div id="history-view" class="view-section hidden">
+                    <section class="history-section glass">
+                        <div class="card-header">
+                            <h2>Usage Log</h2>
+                        </div>
+                        <div class="history-table-container">
+                            <table class="history-table">
+                                <thead>
+                                    <tr>
+                                        <th>Timestamp</th>
+                                        <th>Device</th>
+                                        <th>Power</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="history-log">
+                                    <!-- Populated by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Settings View -->
+                <div id="settings-view" class="view-section hidden">
+                    <section class="settings-section glass">
+                        <div class="card-header">
+                            <h2>System Preferences</h2>
+                        </div>
+                        <div class="settings-grid">
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <label>Alert Threshold</label>
+                                    <p>Trigger warning when usage exceeds this value (Watts).</p>
+                                </div>
+                                <input type="number" id="set-threshold" value="3000" onchange="updateSettings()">
+                            </div>
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <label>Sliding Window</label>
+                                    <p>Time period for rolling average calculation (Seconds).</p>
+                                </div>
+                                <input type="number" id="set-window" value="10" onchange="updateSettings()">
+                            </div>
+                        </div>
+                        <div class="settings-footer">
+                            <button class="save-settings-btn" onclick="updateSettings()">Apply Changes</button>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="dashboard.js"></script>
+</body>
+</html>

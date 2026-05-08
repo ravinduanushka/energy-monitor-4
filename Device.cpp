@@ -1,21 +1,30 @@
 #include "Device.h"
 
-Device::Device() : id(""), name(""), powerRating(0.0), status(false) {}
+Device::Device() : id(0), name(""), powerRating(0.0), room(""), status(false) {}
 
-Device::Device(std::string id, std::string name, double powerRating)
-    : id(id), name(name), powerRating(powerRating), status(false) {}
+Device::Device(int id, std::string name, double powerRating, std::string room)
+    : id(id), name(name), powerRating(powerRating), room(room), status(false) {}
 
-void Device::turnOn() {
-    status = true;
+void Device::toggle() {
+    status = !status;
 }
 
-void Device::turnOff() {
-    status = false;
+bool Device::isOn() const {
+    return status;
 }
 
-double Device::getCurrentUsage() const {
-    if (status) {
-        return powerRating;
-    }
-    return 0.0;
+std::string Device::getName() const {
+    return name;
+}
+
+double Device::getPower() const {
+    return powerRating;
+}
+
+std::string Device::getRoom() const {
+    return room;
+}
+
+int Device::getId() const {
+    return id;
 }

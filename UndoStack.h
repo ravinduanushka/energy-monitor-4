@@ -8,7 +8,7 @@ private:
     std::stack<std::string> history;
 
 public:
-    void pushAction(const std::string& deviceId);
-    std::string popAction();
+    void push(const std::string& action);
+    std::string pop();
     bool isEmpty() const;
 };

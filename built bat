@@ -1,0 +1,9 @@
+@echo off
+echo Compiling all project modules...
+g++ -std=c++11 -o monitor.exe main.cpp EnergyMonitor.cpp Device.cpp RoomGraph.cpp PowerSearchTree.cpp UndoStack.cpp AlertHistory.cpp EnergyQueue.cpp
+if %errorlevel% equ 0 (
+    echo Compilation successful! Created monitor.exe
+) else (
+    echo Compilation failed.
+)
+pause

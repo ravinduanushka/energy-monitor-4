@@ -2,16 +2,21 @@
 #include <string>
 
 class Device {
-public:
-    std::string id;
+private:
+    int id;
     std::string name;
-    double powerRating; // In watts
-    bool status; // true = ON, false = OFF
+    double powerRating;
+    std::string room;
+    bool status;
 
+public:
     Device();
-    Device(std::string id, std::string name, double powerRating);
+    Device(int id, std::string name, double powerRating, std::string room);
 
-    void turnOn();
-    void turnOff();
-    double getCurrentUsage() const;
+    void toggle();
+    bool isOn() const;
+    std::string getName() const;
+    double getPower() const;
+    std::string getRoom() const;
+    int getId() const;
 };
