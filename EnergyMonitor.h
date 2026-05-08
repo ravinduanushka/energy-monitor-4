@@ -2,7 +2,6 @@
 #define ENERGY_MONITOR_H
 
 #include <map>
-
 #include <vector>
 #include <string>
 #include "Device.h"
@@ -21,8 +20,7 @@ private:
     double roomLimit = 100;
     std::vector<double> last7Seconds;
     std::map<std::string, std::vector<std::string>> roomGraph;
-     std::map<std::string, double> roomEnergy;
-     
+    std::map<std::string, double> roomEnergy;
     
 public:
     EnergyMonitor();
@@ -39,7 +37,6 @@ public:
     
     void printAlerts();
 
-    
     void setThreshold(double t);
 
     void calculateConsumption();
@@ -47,7 +44,6 @@ public:
 
     void analyzeRoomUsage();
 
-    
     void updateConsumptionHistory();
     void show7SecondGraph();
     void live7SecondDashboard();
@@ -61,8 +57,6 @@ public:
              std::string& bestPath,
              double& maxSum);
     
-
-
     std::map<int, Device>& getDevices();
     void controlRoom(std::string room, bool state);
     void showRoomControl();

@@ -1,4 +1,6 @@
-#pragma once
+#ifndef DEVICE_H
+#define DEVICE_H
+
 #include <string>
 
 class Device {
@@ -20,3 +22,5 @@ public:
     std::string getRoom() const;
     int getId() const;
 };
+
+#endif

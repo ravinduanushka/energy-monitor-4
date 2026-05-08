@@ -12,6 +12,6 @@ void AlertHistory::addAlert(const std::string& msg) {
 void AlertHistory::displayAlerts() const {
     std::cout << "--- Recent Alerts (Linked List) ---\n";
     for (const auto& alert : alerts) {
-        std::cout << "⚠️ " << alert << "\n";
+        std::cout << alert << "\n";
     }
 }
