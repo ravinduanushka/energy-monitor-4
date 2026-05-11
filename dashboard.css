@@ -218,7 +218,31 @@ nav {
 
 .user-info .name {
     font-weight: 600;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
+}
+
+.mini-btn {
+    background: var(--glass);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text);
+    padding: 5px 12px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.mini-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: var(--primary);
+    transform: translateY(-2px);
+}
+
+.mini-btn i {
+    color: var(--primary);
 }
 
 .user-info .status {

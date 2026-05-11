@@ -38,6 +38,7 @@ class EnergyMonitor {
         // New Data Structures
         this.undoStack = []; // STACK
         this.alerts = []; // LINKED LIST (Simulated with Array for UI)
+        this.fullHistory = []; // For Merge Sort analysis
     }
 
     addDevice(id, name, powerRating, room) {
@@ -95,11 +96,58 @@ class EnergyMonitor {
     }
 
     getTopConsumers() {
-        // Priority Queue logic (Max-Heap equivalent)
-        return Object.values(this.devices)
-            .filter(d => d.status)
-            .sort((a, b) => b.powerRating - a.powerRating)
-            .slice(0, 3);
+        // Use manual Bubble Sort logic for Data Structure demonstration
+        let activeDevices = Object.values(this.devices).filter(d => d.status);
+        
+        // BUBBLE SORT IMPLEMENTATION
+        for (let i = 0; i < activeDevices.length - 1; i++) {
+            for (let j = 0; j < activeDevices.length - i - 1; j++) {
+                if (activeDevices[j].powerRating < activeDevices[j + 1].powerRating) {
+                    let temp = activeDevices[j];
+                    activeDevices[j] = activeDevices[j + 1];
+                    activeDevices[j + 1] = temp;
+                }
+            }
+        }
+        
+        return activeDevices.slice(0, 3);
+    }
+
+    bubbleSortRanking() {
+        alert("Bubble Sort triggered! Re-calculating device ranks...");
+        this.calculateCurrentStats();
+    }
+
+    mergeSortHistory() {
+        if (this.fullHistory.length < 2) {
+            alert("Not enough data for Merge Sort report yet!");
+            return;
+        }
+
+        let data = [...this.fullHistory];
+        
+        // MERGE SORT IMPLEMENTATION
+        const merge = (left, right) => {
+            let result = [], i = 0, j = 0;
+            while (i < left.length && j < right.length) {
+                if (left[i].usage >= right[j].usage) result.push(left[i++]);
+                else result.push(right[j++]);
+            }
+            return result.concat(left.slice(i)).concat(right.slice(j));
+        };
+
+        const sort = (arr) => {
+            if (arr.length <= 1) return arr;
+            let mid = Math.floor(arr.length / 2);
+            return merge(sort(arr.slice(0, mid)), sort(arr.slice(mid)));
+        };
+
+        let sorted = sort(data).slice(0, 5);
+        let report = "=== PEAK USAGE REPORT (MERGE SORT) ===\n\n";
+        sorted.forEach((r, i) => {
+            report += `${i+1}. ${r.usage}W at ${new Date(r.timestamp).toLocaleTimeString()}\n`;
+        });
+        alert(report);
     }
 
     getTrend() {
@@ -387,7 +435,10 @@ monitor.processTick = function() {
         totalUsage += usage;
         
         // Log to history UI if usage is active
-        if (usage > 0) updateHistoryUI(reading);
+        if (usage > 0) {
+            updateHistoryUI(reading);
+            this.fullHistory.push({ usage, timestamp: Date.now() });
+        }
     }
 
     this.slidingWindow.push(totalUsage);

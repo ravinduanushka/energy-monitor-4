@@ -7,6 +7,9 @@
 #include "Device.h"
 #include "UndoStack.h"
 #include "AlertHistory.h"
+#include "BubbleSort.h"
+#include "MergeSort.h"
+#include "EnergyQueue.h"
 
 class EnergyMonitor {
 private:
@@ -21,6 +24,7 @@ private:
     std::vector<double> last7Seconds;
     std::map<std::string, std::vector<std::string>> roomGraph;
     std::map<std::string, double> roomEnergy;
+    std::vector<EnergyReading> usageHistory;
     
 public:
     EnergyMonitor();
@@ -61,6 +65,10 @@ public:
     void controlRoom(std::string room, bool state);
     void showRoomControl();
     void checkRoomLimit();
+
+    // New Sorting Features
+    void showRankedDevices();  // Bubble Sort
+    void generateHistoryReport(); // Merge Sort
 };
 
 #endif

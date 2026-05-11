@@ -7,6 +7,8 @@
 #include <sstream>
 #include <windows.h>
 #include <conio.h>
+#include <conio.h>
+#include <ctime>
 using namespace std;
 
 EnergyMonitor::EnergyMonitor() 
@@ -179,6 +181,10 @@ void EnergyMonitor::calculateConsumption() {
             "Total consumption exceeded limit!"
         );
     }
+
+    // Save reading to history for Merge Sort
+    EnergyReading reading = {"TOTAL", (double)time(0), totalConsumption};
+    usageHistory.push_back(reading);
 }
 void EnergyMonitor::setConsumptionThreshold(double t) {
     consumptionThreshold = t;
@@ -278,6 +284,37 @@ void EnergyMonitor::updateRoomEnergy() {
         if (d.isOn()) {
             roomEnergy[d.getRoom()] += d.getPower();
         }
+    }
+}
+
+void EnergyMonitor::showRankedDevices() {
+    std::vector<Device> deviceList;
+    for (auto const& [id, d] : devices) {
+        deviceList.push_back(d);
+    }
+
+    bubbleSortDevices(deviceList);
+
+    cout << "\n=== DEVICES RANKED BY POWER (Bubble Sort) ===\n";
+    for (const auto& d : deviceList) {
+        cout << d.getName() << " : " << d.getPower() << " W [" << d.getRoom() << "]\n";
+    }
+}
+
+void EnergyMonitor::generateHistoryReport() {
+    if (usageHistory.empty()) {
+        cout << "No history data available yet!\n";
+        return;
+    }
+
+    std::vector<EnergyReading> sortedHistory = usageHistory;
+    mergeSortReadings(sortedHistory, 0, sortedHistory.size() - 1);
+
+    cout << "\n=== PEAK USAGE REPORT (Merge Sort) ===\n";
+    int count = 0;
+    for (const auto& r : sortedHistory) {
+        cout << "Consumption: " << r.usage << " W\n";
+        if (++count >= 10) break; // Top 10
     }
 }
 void EnergyMonitor::showRoomGraph() {
