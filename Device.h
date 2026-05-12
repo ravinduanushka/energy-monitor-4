@@ -20,7 +20,7 @@ public:
     std::string getName() const;
     double getPower() const;
     std::string getRoom() const;
-    int getId() const;
+    int getId() const;                
 };
 
 #endif

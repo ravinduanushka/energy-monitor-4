@@ -114,7 +114,7 @@ class EnergyMonitor {
     }
 
     bubbleSortRanking() {
-        alert("Bubble Sort triggered! Re-calculating device ranks...");
+        alert("Re-calculating device priority ranks...");
         this.calculateCurrentStats();
     }
 
@@ -143,7 +143,7 @@ class EnergyMonitor {
         };
 
         let sorted = sort(data).slice(0, 5);
-        let report = "=== PEAK USAGE REPORT (MERGE SORT) ===\n\n";
+        let report = "=== PEAK USAGE ANALYTICS ===\n\n";
         sorted.forEach((r, i) => {
             report += `${i+1}. ${r.usage}W at ${new Date(r.timestamp).toLocaleTimeString()}\n`;
         });
@@ -341,7 +341,7 @@ function runRoomAnalysis() {
     const resultsDiv = document.getElementById('graph-results');
     
     if (!room) {
-        resultsDiv.innerHTML = '<p class="placeholder-text">Select a room to trigger DFS Graph traversal...</p>';
+        resultsDiv.innerHTML = '<p class="placeholder-text">Select a room to begin analysis...</p>';
         return;
     }
 
@@ -350,7 +350,7 @@ function runRoomAnalysis() {
     let totalPower = 0;
     
     let html = `<h3>Analysis for ${room}</h3><br>`;
-    html += `<p style="color:var(--text-dim)">Traversing Graph Nodes connected to "${room}"...</p><br>`;
+    html += `<p style="color:var(--text-dim)">Scanning room network: "${room}"...</p><br>`;
     
     if (deviceIds.length === 0) {
         html += `<p>No devices connected to this room node.</p>`;

@@ -7,7 +7,6 @@
 #include <sstream>
 #include <windows.h>
 #include <conio.h>
-#include <conio.h>
 #include <ctime>
 using namespace std;
 
@@ -26,8 +25,8 @@ void EnergyMonitor::addDevice(int id, std::string name, double power, std::strin
 
         return;
     }
-     devices[id] = Device(id, name, power, room);
-undoStack.push("ADD " + to_string(id));
+    devices[id] = Device(id, name, power, room);
+    undoStack.push("ADD " + to_string(id));
     alertHistory.addAlert("Device added: " + to_string(id));
     if (power > powerThreshold) {
         alertHistory.addAlert(" HIGH POWER ALERT: Device " + to_string(id) +
@@ -43,8 +42,9 @@ void EnergyMonitor::toggleDevice(int id) {
     }
     devices[id].toggle();
 
-    undoStack.push("TOGGLE " + to_string(id));    cout << "Toggled device " << id << endl;
-        alertHistory.addAlert("Toggled device: " + to_string(id));
+    undoStack.push("TOGGLE " + to_string(id));
+    cout << "Toggled device " << id << endl;
+    alertHistory.addAlert("Toggled device: " + to_string(id));
         //   cout << "Toggled device " << id << endl;
 
    double p = devices[id].getPower();
@@ -289,13 +289,13 @@ void EnergyMonitor::updateRoomEnergy() {
 
 void EnergyMonitor::showRankedDevices() {
     std::vector<Device> deviceList;
-    for (auto const& [id, d] : devices) {
-        deviceList.push_back(d);
+    for (auto const& pair : devices) {
+        deviceList.push_back(pair.second);
     }
 
     bubbleSortDevices(deviceList);
 
-    cout << "\n=== DEVICES RANKED BY POWER (Bubble Sort) ===\n";
+    cout << "\n=== DEVICES RANKED BY POWER ===\n";
     for (const auto& d : deviceList) {
         cout << d.getName() << " : " << d.getPower() << " W [" << d.getRoom() << "]\n";
     }
@@ -310,11 +310,11 @@ void EnergyMonitor::generateHistoryReport() {
     std::vector<EnergyReading> sortedHistory = usageHistory;
     mergeSortReadings(sortedHistory, 0, sortedHistory.size() - 1);
 
-    cout << "\n=== PEAK USAGE REPORT (Merge Sort) ===\n";
+    cout << "\n=== PEAK USAGE ANALYTICS REPORT ===\n";
     int count = 0;
     for (const auto& r : sortedHistory) {
-        cout << "Consumption: " << r.usage << " W\n";
-        if (++count >= 10) break; // Top 10
+        cout << ++count << ". Usage: " << r.usage << " W\n";
+        if (count >= 10) break; // Top 10
     }
 }
 void EnergyMonitor::showRoomGraph() {
@@ -460,18 +460,5 @@ void EnergyMonitor::checkRoomLimit() {
 
     if (!alertFound) {
         cout << "No rooms exceeded limit.\n";
-    }
-
-    for (auto &r : roomUsage) {
-
-        if (r.second > roomLimit) {
-
-            cout << " ALERT: " << r.first
-                 << " exceeded limit (" << r.second << " W)\n";
-
-            alertHistory.addAlert(
-                "Room overload: " + r.first
-            );
-        }
     }
 }

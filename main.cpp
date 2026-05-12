@@ -24,8 +24,8 @@ while (true) {
     cout << "10. Control Room (ON/OFF)" << endl;
     cout << "11. Show Room Usage" << endl;
     cout << "12. Check Room Limit" << endl;
-    cout << "13. Rank Devices (Bubble Sort)" << endl;
-    cout << "14. Peak Usage Report (Merge Sort)" << endl;
+    cout << "13. Rank Devices by Power" << endl;
+    cout << "14. Full Usage Peak Report" << endl;
     cout << "15. Save And Exit" << endl;
 
 

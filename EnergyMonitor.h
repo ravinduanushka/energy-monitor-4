@@ -32,7 +32,7 @@ public:
     // Core features (your menu functions)
     void addDevice(int id, std::string name, double power, std::string room);
     void toggleDevice(int id);    
-    void listDevices();
+    // void listDevices(); // Removed: redundant with showStatus()
     void showStatus();
     void undo();
    
@@ -48,8 +48,8 @@ public:
 
     void analyzeRoomUsage();
 
-    void updateConsumptionHistory();
-    void show7SecondGraph();
+    // void updateConsumptionHistory(); // Removed: unused
+    // void show7SecondGraph(); // Removed: replaced by live7SecondDashboard()
     void live7SecondDashboard();
     void connectRooms(std::string r1, std::string r2);
     void updateRoomEnergy();
